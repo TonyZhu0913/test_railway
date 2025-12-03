@@ -3,31 +3,10 @@ from flask_cors import CORS
 import pandas as pd
 import joblib
 import os
-import gdown
+from huggingface_hub import hf_hub_download
 
 app = Flask(__name__)
 CORS(app)
-
-# --- CONFIGURATION: PASTE YOUR IDs HERE ---
-# Replace these strings with the actual File IDs from your Google Drive links
-MODEL_FILE_ID = '1SCJm5a_r4Bct4YoBCZZiUhaI9TJ9IHel'
-ENCODER_FILE_ID = '1b7NsCC7fEIuGZKrP7WycF558pCYqpSTa'
-
-def get_weights(filename, file_id):
-    """Downloads file from Google Drive if it doesn't exist locally."""
-    if not os.path.exists(filename):
-        print(f"Downloading {filename} from Google Drive...")
-        try:
-            # Construct the download URL
-            url = f'https://drive.google.com/uc?id={file_id}'
-            gdown.download(url, filename, quiet=False)
-        except Exception as e:
-            print(f"Failed to download {filename}: {e}")
-
-# Download weights before loading (This happens when the app boots)
-print("Checking for model files...")
-get_weights('model.joblib', MODEL_FILE_ID)
-get_weights('encoder.joblib', ENCODER_FILE_ID)
 
 # Load the pre-trained model and encoder at startup
 # This is much faster than training!
