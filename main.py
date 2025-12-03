@@ -3,7 +3,6 @@ from flask_cors import CORS
 import pandas as pd
 import joblib
 import os
-from huggingface_hub import hf_hub_download
 
 app = Flask(__name__)
 CORS(app)
